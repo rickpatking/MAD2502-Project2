@@ -18,4 +18,6 @@ def get_escape_time(c: complex, max_iterations: int) -> int | None:
         if abs(z) > 2:
             return i
         z = ((z)**2) + c
+    if abs(z) > 2:
+        return max_iterations
     return None
