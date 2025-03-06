@@ -21,3 +21,36 @@ def get_escape_time(c: complex, max_iterations: int) -> int | None:
     if abs(z) > 2:
         return max_iterations
     return None
+
+def get_complex_grid(
+    top_left: complex,
+    bottom_right: complex,
+    step: float
+) -> np.ndarray:
+    """
+    Computes a numpy array of complex numbers that are evenly spaced between top_left and bottom_right
+    Increases row by 1 will increase
+
+    :param top_left:
+    :param bottom_right:
+    :param step:
+    :return:
+    """
+    rows = int((abs(top_left.imag - bottom_right.imag) // step) + 1)
+    cols = int((abs(top_left.real - bottom_right.real) // step) + 1)
+    ar = np.zeros((rows, cols), dtype=complex)
+    if top_left.real < bottom_right.real:
+        row1 = np.arange(top_left.real, bottom_right.real)
+    else:
+        row1 = np.arange(top_left.real*-1, bottom_right.real*-1)
+        row1 = row1[::-1]
+    if top_left.imag < bottom_right.imag:
+        col1 = np.arange(top_left.imag, bottom_right.imag)
+    else:
+        col1 = np.arange(top_left.imag*-1, bottom_right.imag*-1)
+        col1 = col1[::-1]
+    ar.real = row1
+    ar.imag = col1.reshape(-1, 1)
+    return ar
+
+print(get_complex_grid(+1-1j, -1.1+1.1j, 1))
