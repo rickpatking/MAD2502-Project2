@@ -40,8 +40,8 @@ def get_complex_grid(
     rows = int((abs(top_left.imag - bottom_right.imag) // step) + 1)
     cols = int((abs(top_left.real - bottom_right.real) // step) + 1)
     ar = np.zeros((rows, cols), dtype=complex)
-    row1 = np.arange(top_left.real, bottom_right.real)
-    col1 = np.arange(top_left.imag*-1, bottom_right.imag*-1)
+    row1 = np.arange(top_left.real, bottom_right.real, step)
+    col1 = np.arange(top_left.imag*-1, bottom_right.imag*-1, step)
     col1 = col1[::-1]
     ar.real = row1
     ar.imag = col1.reshape(-1, 1)
