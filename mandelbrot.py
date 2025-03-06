@@ -29,28 +29,22 @@ def get_complex_grid(
 ) -> np.ndarray:
     """
     Computes a numpy array of complex numbers that are evenly spaced between top_left and bottom_right
-    Increases row by 1 will increase
+    Increases in row by 1 will decrease the imaginary part by 1 step
+    Increases in column by 1 will increase the imaginary part by 1 step
 
-    :param top_left:
-    :param bottom_right:
-    :param step:
-    :return:
+    :param top_left: Complex number for the top_left of the grid
+    :param bottom_right: Complex number for the bottom_right of the grid
+    :param step: Spacing between grid points
+    :return: A 2d numpy array of complex numbers
     """
     rows = int((abs(top_left.imag - bottom_right.imag) // step) + 1)
     cols = int((abs(top_left.real - bottom_right.real) // step) + 1)
     ar = np.zeros((rows, cols), dtype=complex)
-    if top_left.real < bottom_right.real:
-        row1 = np.arange(top_left.real, bottom_right.real)
-    else:
-        row1 = np.arange(top_left.real*-1, bottom_right.real*-1)
-        row1 = row1[::-1]
-    if top_left.imag < bottom_right.imag:
-        col1 = np.arange(top_left.imag, bottom_right.imag)
-    else:
-        col1 = np.arange(top_left.imag*-1, bottom_right.imag*-1)
-        col1 = col1[::-1]
+    row1 = np.arange(top_left.real, bottom_right.real)
+    col1 = np.arange(top_left.imag*-1, bottom_right.imag*-1)
+    col1 = col1[::-1]
     ar.real = row1
     ar.imag = col1.reshape(-1, 1)
     return ar
 
-print(get_complex_grid(+1-1j, -1.1+1.1j, 1))
+print(get_complex_grid(-1+1j, 1.1-1.1j, 1))
