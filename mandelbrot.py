@@ -49,5 +49,3 @@ def get_complex_grid(
     ar.real = row1
     ar.imag = col1.reshape(-1, 1)
     return ar
-
-print(get_complex_grid(-1+1j, 1.1-1.1j, 1))
