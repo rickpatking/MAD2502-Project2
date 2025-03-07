@@ -41,11 +41,8 @@ def get_complex_grid(
     if bottom_right.real < top_left.real or bottom_right.imag > top_left.imag:
         return np.array([])
 
-    rows = int((abs(top_left.imag - bottom_right.imag) // step) + 1)
-    cols = int((abs(top_left.real - bottom_right.real) // step) + 1)
-    ar = np.zeros((rows, cols), dtype=complex)
     row1 = np.arange(top_left.real, bottom_right.real, step)
     col1 = np.arange(top_left.imag, bottom_right.imag, -step)
-    ar.real = row1
-    ar.imag = col1.reshape(-1, 1)
+    col1 = col1.reshape(-1, 1)
+    ar = row1 + col1 * 1j
     return ar
