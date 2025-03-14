@@ -73,16 +73,13 @@ def get_escape_time_color_arr(
         for j in range(escape_times_arr.shape[1]):
             escape_time = get_escape_time(c_arr[i, j], max_iterations) #calls on get_escape_time to get number of iterations
             if escape_time is None:
-                escape_times_arr[i, j] = 0 #escape time of zero
+                escape_times_arr[i, j] = max_iterations + 1 #will calculate an escape time of zero using formula
             else:
-                escape_times_arr[i, j] = escape_time
+                escape_times_arr[i, j] = escape_time #assigns escape time value to the max iterations value returned
     
     for i in range(escape_times_arr.shape[0]): #iterates through each value in escape times array
         for j in range(escape_times_arr.shape[1]):
-            if escape_times_arr[i, j] == 0: #if escape time is zero, then color value is zero
-                color_arr[i, j] = 0
-            else:
-                color_arr[i, j] = 1/(escape_times_arr[i, j]+1) #calculates what color time will be using escape time value found earlier
+            escape_time = escape_times_arr[i, j] #gets the escape time values from the escape_times_arr
+            color_arr[i, j] = (max_iterations - escape_time + 1) / (max_iterations + 1) #calculates the color value and adds it to the color array
     
     return color_arr
-                
