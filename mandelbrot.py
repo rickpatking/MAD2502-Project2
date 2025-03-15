@@ -47,7 +47,6 @@ def get_complex_grid(
     ar = row1 + col1 * 1j
     return ar
 
-# Julia Set
 def get_julia_color_arr(grid: np.ndarray, c: complex, max_iter: int) -> np.ndarray:
     """
     Compute the escape times for the filled Julia set of the given complex number c.
@@ -80,4 +79,3 @@ def get_julia_color_arr(grid: np.ndarray, c: complex, max_iter: int) -> np.ndarr
             z[escaped] = np.nan
 
     return escape_data
-
