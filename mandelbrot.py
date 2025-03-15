@@ -104,7 +104,7 @@ def get_julia_color_arr(grid: np.ndarray, c: complex, max_iter: int) -> np.ndarr
     escape_threshold = max(np.abs(c), 2)
     # NumPy's seterr suppresses warnings
     with np.errstate(over='ignore', invalid='ignore'):
-        for i in range(max_iter):
+        for i in range(1, max_iter):
             # Perform Julia set iteration: z_n+1 = z_n^2 + c
             z = z ** 2 + c
 
