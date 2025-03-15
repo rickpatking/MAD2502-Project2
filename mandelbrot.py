@@ -113,7 +113,7 @@ def get_julia_color_arr(grid: np.ndarray, c: complex, max_iter: int) -> np.ndarr
 
             # Assign escape iteration
             escape_data[escaped & (escape_data == 0)] = i
-            z[escaped] = 0
+            z[escaped] = 1
     is_inside = escape_data == 0
     escape_data[is_inside] = max_iter + 1
     normalized_escape = (max_iter - escape_data + 1) / (max_iter + 1)
