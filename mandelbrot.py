@@ -101,18 +101,21 @@ def get_julia_color_arr(grid: np.ndarray, c: complex, max_iter: int) -> np.ndarr
 
     # Create a mutable copy of grid to perform iteration updates
     z = np.copy(grid)
-
-    # NumPy's seterr suppresses warnings (e.g., overflow warnings)
+    escape_threshold = max(np.abs(c), 2)
+    # NumPy's seterr suppresses warnings
     with np.errstate(over='ignore', invalid='ignore'):
         for i in range(max_iter):
             # Perform Julia set iteration: z_n+1 = z_n^2 + c
             z = z ** 2 + c
 
             # magnitude > 2
-            escaped = np.abs(z) > 2
+            escaped = np.abs(z) > escape_threshold
 
             # Assign escape iteration
             escape_data[escaped & (escape_data == 0)] = i
-            z[escaped] = np.nan
+            z[escaped] = 0
+    is_inside = escape_data == 0
+    escape_data[is_inside] = max_iter + 1
+    normalized_escape = (max_iter - escape_data + 1) / (max_iter + 1)
 
-    return escape_data
+    return normalized_escape
