@@ -47,6 +47,43 @@ def get_complex_grid(
     ar = row1 + col1 * 1j
     return ar
 
+def get_escape_time_color_arr(
+    c_arr: np.ndarray,
+    max_iterations: int
+) -> np.ndarray:
+    """
+    Computes a numpy array of the color values for the given values. 
+    The color values, ranging from 0 to 1(inclusive) are determined based on the escape time of each c-value.
+
+    Parameters
+    ----------
+    c_arr: np.ndarray
+        The array of values that will be used to find the color values
+        
+    Returns
+    -------
+    array, an array of the same shape as c_arr, with corresponding color values
+    
+    """
+    
+    escape_times_arr = np.zeros(c_arr.shape) #array of the escape times that is same shape as c_arr, but filled with zeroes initially
+    color_arr = np.zeros(c_arr.shape) #creates an array that has the calculated color values using their escape times
+    
+    for i in range(escape_times_arr.shape[0]): #iterates through each value in escape times array
+        for j in range(escape_times_arr.shape[1]):
+            escape_time = get_escape_time(c_arr[i, j], max_iterations) #calls on get_escape_time to get number of iterations
+            if escape_time is None:
+                escape_times_arr[i, j] = max_iterations + 1 #will calculate an escape time of zero using formula
+            else:
+                escape_times_arr[i, j] = escape_time #assigns escape time value to the max iterations value returned
+    
+    for i in range(escape_times_arr.shape[0]): #iterates through each value in escape times array
+        for j in range(escape_times_arr.shape[1]):
+            escape_time = escape_times_arr[i, j] #gets the escape time values from the escape_times_arr
+            color_arr[i, j] = (max_iterations - escape_time + 1) / (max_iterations + 1) #calculates the color value and adds it to the color array
+    
+    return color_arr
+
 def get_julia_color_arr(grid: np.ndarray, c: complex, max_iter: int) -> np.ndarray:
     """
     Compute the escape times for the filled Julia set of the given complex number c.
