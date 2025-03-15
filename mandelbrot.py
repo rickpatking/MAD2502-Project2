@@ -46,3 +46,38 @@ def get_complex_grid(
     col1 = col1.reshape(-1, 1)
     ar = row1 + col1 * 1j
     return ar
+
+# Julia Set
+def get_julia_color_arr(grid: np.ndarray, c: complex, max_iter: int) -> np.ndarray:
+    """
+    Compute the escape times for the filled Julia set of the given complex number c.
+
+    Parameters:
+        grid (np.ndarray): 2D array of complex numbers representing the complex plane.
+        c (complex): The constant c defining the Julia set.
+        max_iter (int): Maximum number of iterations before declaring a point inside the set.
+
+    Returns:
+        np.ndarray: 2D array representing escape times, used for coloring the Julia set.
+    """
+    # Initialize escape times to zero
+    escape_data = np.zeros(grid.shape, dtype=int)
+
+    # Create a mutable copy of grid to perform iteration updates
+    z = np.copy(grid)
+
+    # NumPy's seterr suppresses warnings (e.g., overflow warnings)
+    with np.errstate(over='ignore', invalid='ignore'):
+        for i in range(max_iter):
+            # Perform Julia set iteration: z_n+1 = z_n^2 + c
+            z = z ** 2 + c
+
+            # magnitude > 2
+            escaped = np.abs(z) > 2
+
+            # Assign escape iteration
+            escape_data[escaped & (escape_data == 0)] = i
+            z[escaped] = np.nan
+
+    return escape_data
+
